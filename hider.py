@@ -52,19 +52,20 @@ def image_process(image_type):
                             wrt.write(filedata+data)
             else:
                 print("passwords do not match!")
-               
-try:
-    with open(args.cover,'rb+') as file:
-        filedata=file.read()
-        file.seek(0,0)
-        begin=file.read(8)
-        file.seek(-8,2)
-        end=file.read(8)
-        if b'\xff\xd9' in filedata and b'\xff\xd8\xff' in begin:
-            image_process('jpg')
-        elif  b'\x49\x45\x4e\x44\xae\x42\x60\x82' in filedata and b'\x89\x50\x4e\x47\x0d\x0a\x1a\x0a' in begin:
-            image_process('png')
-        else:
-            print("cover file must be png or jpg")    
-except Exception as er:
-    print(str(er))
+
+if __name__ == "__main__":        
+    try:
+        with open(args.cover,'rb+') as file:
+            filedata=file.read()
+            file.seek(0,0)
+            begin=file.read(8)
+            file.seek(-8,2)
+            end=file.read(8)
+            if b'\xff\xd9' in filedata and b'\xff\xd8\xff' in begin:
+                image_process('jpg')
+            elif  b'\x49\x45\x4e\x44\xae\x42\x60\x82' in filedata and b'\x89\x50\x4e\x47\x0d\x0a\x1a\x0a' in begin:
+                image_process('png')
+            else:
+                print("cover file must be png or jpg")    
+    except Exception as er:
+        print(str(er))
