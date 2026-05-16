@@ -2,6 +2,9 @@ import argparse
 import getpass
 import pyaes
 import hashlib
+import pathlib
+
+
 parser=argparse.ArgumentParser()
 parser.add_argument("cover",help="cover file png or jpg",metavar="[cover]")
 parser.add_argument("hidden",metavar="[hidden]",help="file that you want to hide ",nargs='?')
@@ -42,7 +45,7 @@ def image_process(image_type):
                 aes = pyaes.AESModeOfOperationCTR(hashlib.sha256(password.encode()).digest())
                 with open(args.hidden,"rb")as hidden:
                     data=hidden.read()
-                    data=data+b'\xff'*8+b'\xfa'*8+b'\xdf'*8+b'\xfd'*8+args.hidden.split('/')[-1].encode()
+                    data=data+b'\xff'*8+b'\xfa'*8+b'\xdf'*8+b'\xfd'*8+pathlib.Path(args.hidden).name.encode()
                     data=aes.encrypt(data)
                     if args.output:
                         with open(args.output,'wb') as wrt:
